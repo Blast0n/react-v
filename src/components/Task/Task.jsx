@@ -2,16 +2,30 @@ import { useState } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import './Task.css';
 
-export default function Task({ id, text, done, time, taskIsDone, taskDeleted, taskEditedData }) {
+export default function Task({
+  id,
+  text,
+  done,
+  time,
+  timer,
+  taskIsDone,
+  taskDeleted,
+  taskEditedData,
+  timerStart,
+  timerPause,
+}) {
   const [edit, setEdit] = useState(false);
-  const [timeCreated, setTimeCreated] = useState(formatDistanceToNow(time, { includeSeconds: true }));
+
   let classNameSwitch = '';
 
-  setInterval(() => {
-    if (formatDistanceToNow(time, { includeSeconds: true }) !== timeCreated) {
-      setTimeCreated(formatDistanceToNow(time, { includeSeconds: true }));
+  function toTime(sec) {
+    const minutes = Math.floor(sec / 60);
+    let seconds = sec - minutes * 60;
+    if (seconds < 10) {
+      seconds = `0${seconds}`;
     }
-  }, 5000);
+    return `${minutes}:${seconds}`;
+  }
 
   if (edit) {
     classNameSwitch = 'editing';
@@ -36,8 +50,15 @@ export default function Task({ id, text, done, time, taskIsDone, taskDeleted, ta
         <input className={done ? 'toggle clicked' : 'toggle'} type="checkbox" onClick={() => taskIsDone(id)} />
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control, jsx-a11y/label-has-for */}
         <label>
-          <span className="description">{text}</span>
-          <span className="created">created {timeCreated} ago</span>
+          <span className="title">{text}</span>
+          <span className="description">
+            {/* eslint-disable-next-line */}
+            <button className="icon icon-play" onClick={() => timerStart(id)}></button>
+            {/* eslint-disable-next-line */}
+            <button className="icon icon-pause" onClick={() => timerPause(id)}></button>
+            <span className="timer">{toTime(timer)}</span>
+          </span>
+          <span className="created">created {formatDistanceToNow(time, { includeSeconds: true })} ago</span>
         </label>
         {/* eslint-disable-next-line */}
         <button className="icon icon-edit" type="button" onClick={taskIsEdit} />

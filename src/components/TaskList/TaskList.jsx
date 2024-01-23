@@ -2,7 +2,7 @@ import './TaskList.css';
 
 import Task from '../Task/Task';
 
-export default function TaskList({ data, filter, taskIsDone, taskDeleted, taskEditedData }) {
+export default function TaskList({ data, filter, taskIsDone, taskDeleted, taskEditedData, timerStart, timerPause }) {
   const tasks = data.map((item) => {
     if (filter === 'All') {
       return (
@@ -12,9 +12,12 @@ export default function TaskList({ data, filter, taskIsDone, taskDeleted, taskEd
           key={item.id}
           done={item.done}
           time={item.time}
+          timer={item.timer}
           taskIsDone={taskIsDone}
           taskDeleted={taskDeleted}
           taskEditedData={taskEditedData}
+          timerStart={timerStart}
+          timerPause={timerPause}
         />
       );
     }
@@ -26,9 +29,12 @@ export default function TaskList({ data, filter, taskIsDone, taskDeleted, taskEd
           key={item.id}
           done={item.done}
           time={item.time}
+          timer={item.timer}
           taskIsDone={taskIsDone}
           taskDeleted={taskDeleted}
           taskEditedData={taskEditedData}
+          timerStart={timerStart}
+          timerPause={timerPause}
         />
       );
     }
@@ -40,9 +46,12 @@ export default function TaskList({ data, filter, taskIsDone, taskDeleted, taskEd
           key={item.id}
           done={item.done}
           time={item.time}
+          timer={item.timer}
           taskIsDone={taskIsDone}
           taskDeleted={taskDeleted}
           taskEditedData={taskEditedData}
+          timerStart={timerStart}
+          timerPause={timerPause}
         />
       );
     }
