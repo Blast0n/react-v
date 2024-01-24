@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './App.css';
 
 import Header from './components/Header/Header';
@@ -10,37 +10,18 @@ function App() {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState('All');
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (data.length !== 0) {
-        setData(
-          data.map((obj) => {
-            if (obj.timer > 0 && obj.timerStatus) {
-              obj.timer -= 1;
-            }
-            return obj;
-          })
-        );
-      }
-    }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, [data]);
-
-  const newData = (text, done, time, timer, timerStatus) => {
+  const newData = (text, done, time, timer) => {
     return {
       id: Math.random(),
       text,
       done,
       time,
       timer,
-      timerStatus,
     };
   };
 
   const handleKeyDown = (text, timer) => {
-    setData([...data, newData(text, false, new Date().toString(), timer, false)]);
+    setData([...data, newData(text, false, new Date().toString(), timer)]);
   };
 
   const taskIsDone = (id) => {
@@ -66,6 +47,9 @@ function App() {
     setData(
       data.map((obj) => {
         if (id === obj.id) {
+          if (!event.target.value) {
+            return obj;
+          }
           obj.text = event.target.value;
         }
         return obj;
@@ -77,27 +61,6 @@ function App() {
     setFilter(event.target.innerText);
   };
 
-  const timerStart = (id) => {
-    setData(
-      data.map((obj) => {
-        if (id === obj.id) {
-          obj.timerStatus = true;
-        }
-        return obj;
-      })
-    );
-  };
-
-  const timerPause = (id) => {
-    setData(
-      data.map((obj) => {
-        if (id === obj.id) {
-          obj.timerStatus = false;
-        }
-        return obj;
-      })
-    );
-  };
   return (
     <section className="todoapp">
       <Header />
@@ -109,8 +72,6 @@ function App() {
           taskIsDone={taskIsDone}
           taskDeleted={taskDeleted}
           taskEditedData={taskEditedData}
-          timerStart={timerStart}
-          timerPause={timerPause}
         />
       </section>
       <Footer data={data} filter={filter} filterChanged={filterChanged} taskClearDeleted={taskClearDeleted} />

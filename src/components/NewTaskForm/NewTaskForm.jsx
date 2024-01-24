@@ -12,7 +12,12 @@ export default function NewTaskForm({ handleKeyDown }) {
     event.preventDefault();
     if (event.target[0].value) {
       const text = event.target[0].value;
-      const timer = event.target[1].value * 60 + +event.target[2].value;
+      let timer;
+      if (!event.target[1].value && !event.target[2].value) {
+        timer = 0;
+      } else {
+        timer = event.target[1].value * 60 + +event.target[2].value;
+      }
       handleKeyDown(text, timer);
       setValue({
         text: '',
