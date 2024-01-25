@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import './Task.css';
 
-export default function Task({ id, text, done, time, timer, filter, taskIsDone, taskDeleted, taskEditedData }) {
+export default function Task({ id, text, done, time, timer, taskIsDone, taskDeleted, taskEditedData }) {
   const [edit, setEdit] = useState(false);
   const [timeCreated, setTimeCreated] = useState(formatDistanceToNow(time, { includeSeconds: true }));
   const [timerValue, setTimerValue] = useState(timer);
@@ -54,12 +54,7 @@ export default function Task({ id, text, done, time, timer, filter, taskIsDone, 
     }
   };
 
-  let classNameFilter = 'view';
-  if (filter === 'Active' && done) {
-    classNameFilter = 'view hidden';
-  } else if (filter === 'Completed' && !done) {
-    classNameFilter = 'view hidden';
-  }
+  const classNameFilter = 'view';
 
   const timerPlay = () => {
     if (!timerStatus) {
@@ -77,6 +72,7 @@ export default function Task({ id, text, done, time, timer, filter, taskIsDone, 
     taskIsDone(id);
     setTimerStatus(false);
   };
+
   return (
     <li className={classNameSwitch}>
       <div className={classNameFilter}>
